@@ -1,0 +1,62 @@
+﻿<Window x:Class="PowerCopyGUI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PowerCopyGUI"
+        mc:Ignorable="d"
+        Title="PowerCopy By SCCMTST" Height="500" Width="625">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="15"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="15"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="19"/>
+            <RowDefinition Height="75"/>
+            <RowDefinition Height="75"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="45"/>
+            <RowDefinition Height="45"/>
+            <RowDefinition Height="15"/>
+        </Grid.RowDefinitions>
+        <DockPanel HorizontalAlignment="Stretch" Height="auto" LastChildFill="False" VerticalAlignment="Stretch" Width="auto" Grid.ColumnSpan="3" Background="#FF778083" Grid.Column="0" Grid.Row="0">
+            <Menu x:Name="menu" Height="auto" VerticalAlignment="Stretch" Width="auto" HorizontalAlignment="Stretch" Grid.ColumnSpan="3" Margin="0" Background="#FF778083" >
+                <MenuItem Header="File" Height="auto" Width="40" Background="#FF778083" VerticalAlignment="Stretch">
+                    <MenuItem x:Name="Settings" Header="Settings" HorizontalAlignment="Stretch"/>
+                </MenuItem>
+                <MenuItem x:Name="Help" Header="Help" Height="auto" Width="50" Background="#FF778083"/>
+            </Menu>
+        </DockPanel>
+        <TextBox VerticalAlignment="Stretch" x:Name="Output" Grid.Column="1" Margin="0" Grid.Row="3" TextWrapping="Wrap" Width="auto" Foreground="Green" Background="Black" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Auto" IsReadOnly="True" ScrollViewer.CanContentScroll="True"/>
+        <Label Grid.Column="1" Content="Source:" HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Top"/>
+        <TextBox x:Name="Source" Grid.Column="1" Margin="54,4,39,0" Grid.Row="1" TextWrapping="NoWrap" VerticalAlignment="Top" AutomationProperties.HelpText="What you want to copy" ToolTip="What you want to copy"/>
+        <Button x:Name="BrowseSource" Grid.Column="1" Content="..." Margin="0,4,10,0" Grid.Row="1" VerticalAlignment="Top" Width="24" HorizontalAlignment="Right"/>
+        <Label Grid.Column="1" Content="Destination:" Margin="0,31,0,0" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Left" Width="73"/>
+        <TextBox x:Name="Destination" Grid.Column="1" Margin="73,35,39,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" AutomationProperties.HelpText="Where you want to copy to" ToolTip="Where you want to copy to"/>
+        <Button x:Name="BrowseDestination" Grid.Column="1" Content="..." Margin="0,34,10,0" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Right" Width="24"/>
+        <Button x:Name="Start" Grid.Column="1" Content="Start" HorizontalAlignment="Left" Grid.Row="2" VerticalAlignment="Top" Background="ForestGreen" Width="80" Height="25" Margin="10,0,0,0"/>
+        <Button x:Name="Stop" Grid.Column="1" Content="Stop" HorizontalAlignment="Left" Grid.Row="2" VerticalAlignment="Top" Background="IndianRed" Width="80" Margin="10,38,0,0" Height="24"/>
+        <GroupBox Grid.Column="1" Header="Options" Grid.Row="1" Margin="132,59,0,10" Height="auto" HorizontalAlignment="Left" Width="441" Grid.RowSpan="2">
+            <Grid Margin="0,0,20,0">
+                <CheckBox x:Name="Move" Content="Move" HorizontalAlignment="Left" VerticalAlignment="Top" ToolTip="Moves the content of source to the destination"/>
+                <CheckBox x:Name="FSOnly" Content="FS Only" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="64,0,0,0" ToolTip="only copies the folder structure"/>
+                <CheckBox x:Name="Exclude" Content="Exclude:" HorizontalAlignment="Left" Margin="0,32,0,0" VerticalAlignment="Top" ToolTip="files that are to be excluded, Use &quot;;&quot; to seperate each file and must be in &quot; &quot; "/>
+                <TextBox x:Name="ExcludeBox" HorizontalAlignment="Left" Margin="68,30,0,0" TextWrapping="NoWrap" Text="" VerticalAlignment="Top" Width="284" IsEnabled="False" Height="19" ToolTip="files that are to be excluded, Use &quot;;&quot; to seperate each file and must be in &quot; &quot; "/>
+                <CheckBox x:Name="Log" Content="Log" HorizontalAlignment="Left" Margin="373,32,0,0" VerticalAlignment="Top" ToolTip="creates a log file in the destination directory"/>
+                <CheckBox x:Name="BackupMode" Content="Backup" HorizontalAlignment="Left" Margin="140,0,0,0" VerticalAlignment="Top" ToolTip="Uses Backup mode, ignores permistions and allowes files to be copied anyways"/>
+                <Label Content="Over Write:" HorizontalAlignment="Left" Margin="211,-5,0,0" VerticalAlignment="Top"/>
+                <ComboBox x:Name="OverWrite" HorizontalAlignment="Left" Margin="281,-1,0,0" VerticalAlignment="Top" Width="120" Height="22" SelectedIndex="2">
+                    <ComboBoxItem Content="Yes" VerticalAlignment="Center"/>
+                    <ComboBoxItem Content="No" VerticalAlignment="Center"/>
+                    <ComboBoxItem Content="Modified" VerticalAlignment="Center"/>
+                </ComboBox>
+            </Grid>
+        </GroupBox>
+        <ProgressBar x:Name="Progress" Grid.Column="1" Height="25" Margin="5,0,5,0" Grid.Row="4" VerticalAlignment="Center" Width="auto" Foreground="LightSkyBlue" HorizontalAlignment="Stretch" ToolTip="Proggress of the current item"/>
+        <TextBlock Text="{Binding ElementName=Progress, Path=Value, StringFormat={}{0:0}%}" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Grid.Row="4"/>
+        <ProgressBar x:Name="Total" Grid.Column="1" Height="25" Margin="5,0,5,0" Grid.Row="5" VerticalAlignment="Center" Width="auto" HorizontalAlignment="Stretch" ToolTip="Progress of the total proccess"/>
+        <TextBlock Text="{Binding ElementName=Total, Path=Value, StringFormat={}{0:0}%}" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Grid.Row="5"/>
+    </Grid>
+</Window>
